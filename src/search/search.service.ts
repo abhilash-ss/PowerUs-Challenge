@@ -7,9 +7,8 @@ import { Flight, FlightsData } from './types';
 @Injectable()
 export class SearchService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
-  private readonly baseURL = 'https://coding-challenge.powerus.de/flight/';
-
-  private readonly sources = ['source1', 'source2'];
+  private readonly baseURL = process.env.BASE_URL;
+  private readonly sources = process.env.SOURCES.split(',');
 
   async getFlights(): Promise<Flight[]> {
     try {
