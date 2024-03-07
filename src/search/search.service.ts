@@ -17,14 +17,14 @@ export class SearchService {
           try {
             const cacheResult = await this.cacheManager.get(source);
             let flights;
-            if (!cacheResult) {
+            if (cacheResult) {
+              flights = cacheResult;
+            } else {
               const response = await axios.get<FlightsData>(
                 `${this.baseURL}${source}`,
               );
               flights = response.data.flights;
               await this.cacheManager.set(source, flights, 1000 * 60 * 60);
-            } else {
-              flights = await this.cacheManager.get(source);
             }
             return flights;
           } catch (error) {
