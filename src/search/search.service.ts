@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import axios from 'axios';
 
 import { Flight, FlightsData } from './types';
 
 @Injectable()
 export class SearchService {
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
   private readonly baseURL = 'https://coding-challenge.powerus.de/flight/';
 
   private readonly sources = ['source1', 'source2'];
@@ -14,10 +16,18 @@ export class SearchService {
       const responses = await Promise.all(
         this.sources.map(async (source) => {
           try {
-            const res = await axios.get<FlightsData>(
-              `${this.baseURL}${source}`,
-            );
-            return res.data.flights;
+            const cacheResult = await this.cacheManager.get(source);
+            let flights;
+            if (!cacheResult) {
+              const response = await axios.get<FlightsData>(
+                `${this.baseURL}${source}`,
+              );
+              flights = response.data.flights;
+              await this.cacheManager.set(source, flights, 1000 * 60 * 60);
+            } else {
+              flights = await this.cacheManager.get(source);
+            }
+            return flights;
           } catch (error) {
             return null;
           }
