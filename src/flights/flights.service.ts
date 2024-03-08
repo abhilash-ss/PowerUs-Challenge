@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Flight, FlightsData } from './types';
 
 @Injectable()
-export class SearchService {
+export class FlightsService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
   private readonly baseURL = process.env.BASE_URL;
   private readonly sources = process.env.SOURCES.split(',');

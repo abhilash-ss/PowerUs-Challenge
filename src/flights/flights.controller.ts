@@ -1,16 +1,16 @@
 import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 
-import { SearchService } from './search.service';
+import { FlightsService } from './flights.service';
 import { Flight } from './types';
 
-@Controller('search')
-export class SearchController {
-  constructor(private readonly searchService: SearchService) {}
+@Controller('flights')
+export class FlightsController {
+  constructor(private readonly flightsService: FlightsService) {}
 
   @Get()
   async getFlights(): Promise<Flight[]> {
     try {
-      const flights = await this.searchService.getFlights();
+      const flights = await this.flightsService.getFlights();
       return flights;
     } catch (error) {
       console.log('Failed to get Flights::Controller', { error });

@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SearchController } from './search.controller';
-import { SearchService } from './search.service';
+import { FlightsController } from './flights.controller';
+import { FlightsService } from './flights.service';
 
 import { Flight } from './types';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-describe('SearchController', () => {
-  let controller: SearchController;
-  let searchService: SearchService;
+describe('FlightsController', () => {
+  let controller: FlightsController;
+  let service: FlightsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [SearchController],
+      controllers: [FlightsController],
       providers: [
         {
-          provide: SearchService,
+          provide: FlightsService,
           useValue: {
             getFlights: jest.fn(),
           },
@@ -22,8 +22,8 @@ describe('SearchController', () => {
       ],
     }).compile();
 
-    controller = module.get<SearchController>(SearchController);
-    searchService = module.get<SearchService>(SearchService);
+    controller = module.get<FlightsController>(FlightsController);
+    service = module.get<FlightsService>(FlightsService);
   });
 
   it('should be defined', () => {
@@ -55,16 +55,16 @@ describe('SearchController', () => {
           price: 129,
         },
       ];
-      jest.spyOn(searchService, 'getFlights').mockResolvedValue(flights);
+      jest.spyOn(service, 'getFlights').mockResolvedValue(flights);
 
       const result = await controller.getFlights();
 
       expect(result).toEqual(flights);
     });
 
-    it('should throw Internal Server Error if SearchService throws an error', async () => {
+    it('should throw Internal Server Error if service throws an error', async () => {
       jest
-        .spyOn(searchService, 'getFlights')
+        .spyOn(service, 'getFlights')
         .mockRejectedValue(new Error('Service error'));
 
       try {

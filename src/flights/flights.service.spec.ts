@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import axios from 'axios';
-import { SearchService } from './search.service';
+import { FlightsService } from './flights.service';
 
 jest.mock('axios');
 
-describe('SearchService', () => {
-  let service: SearchService;
+describe('FlightsService', () => {
+  let service: FlightsService;
   let cacheManagerMock: {
     get: jest.Mock;
     set: jest.Mock;
@@ -30,7 +30,7 @@ describe('SearchService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SearchService,
+        FlightsService,
         {
           provide: CACHE_MANAGER,
           useValue: cacheManagerMock,
@@ -38,7 +38,7 @@ describe('SearchService', () => {
       ],
     }).compile();
 
-    service = module.get<SearchService>(SearchService);
+    service = module.get<FlightsService>(FlightsService);
   });
 
   afterEach(() => {
