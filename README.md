@@ -51,3 +51,6 @@ $ npm run test:cov
 # curl to test the endpoint
 $ curl --location 'localhost:3000/flights'
 ```
+
+
+Note: So far this endpoint returns only the merged responses of External APIs. I didn't add any query phrases (something like origin, destination, date, etc.) to make the endpoint return only the specific results related to the user search. I wasn't sure about that if it required as part of this assignment. Also, I noticed that the external APIs are returning only for specific original and destination trips.
